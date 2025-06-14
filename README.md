@@ -50,7 +50,7 @@ Leverages transfer learning from a pre-trained ResNet50 model, fine-tuned for th
 ## Dataset
 The dataset used in this project consists of MRI scans of brains categorized into four classes based on the stage of Alzheimer's disease.
 
-The Kaggle Link - https://www.kaggle.com/datasets/tourist55/alzheimers-dataset-4-class-of-images
+The Kaggle Link - https://www.kaggle.com/datasets/uraninjo/augmented-alzheimer-mri-dataset
 
 ## Acknowledgements
 This project was inspired by the need for early and accurate diagnosis of Alzheimer's disease stages to aid in treatment planning and support research into the disease.
