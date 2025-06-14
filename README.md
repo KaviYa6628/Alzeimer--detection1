@@ -27,11 +27,9 @@ project-folder/
 Set the correct paths in your script
 In your Python code, define the dataset paths as:
 
-python
-Copy
-Edit
-TRAIN_DIR = 'Alzheimer_s Dataset/train'
-TEST_DIR = 'Alzheimer_s Dataset/test'
+
+# TRAIN_DIR = 'Alzheimer_s Dataset/train'
+# TEST_DIR = 'Alzheimer_s Dataset/test'
 Run the notebook or Python script
 Open the .ipynb notebook or .py script in VS Code and run the cells or script as needed.
 
