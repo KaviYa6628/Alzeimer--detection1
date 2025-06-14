@@ -54,3 +54,6 @@ The Kaggle Link - https://www.kaggle.com/datasets/uraninjo/augmented-alzheimer-m
 
 ## Acknowledgements
 This project was inspired by the need for early and accurate diagnosis of Alzheimer's disease stages to aid in treatment planning and support research into the disease.
+
+## Final prediction
+I uploaded a Random image from google with the alzeimer disease type "non demted" to test my model at the end of the code block. For this i called my model which is saves as .h5 file,and it is predicted correctly
