@@ -10,7 +10,7 @@ Clone this repository or download the code.
 Install the required dependencies: pip install tensorflow keras scikit-learn matplotlib seaborn numpy
 Make sure you have access to the dataset. This code assumes you have the Alzheimer's dataset placed in a Google Drive folder, accessible via Google Colab.
 ## Usage
-'''
+```
 Clone the repository and open it in VS Code
 Make sure you have Python and required packages installed (see Requirements section).
 
@@ -32,7 +32,7 @@ TRAIN_DIR = 'Alzheimer_s Dataset/train'
 TEST_DIR = 'Alzheimer_s Dataset/test'
 Run the notebook or Python script
 Open the .ipynb notebook or .py script in VS Code and run the cells or script as needed.
-'''
+```
 
 
 
