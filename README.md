@@ -9,7 +9,7 @@ Python 3.6, TensorFlow, Keras, Scikit-learn, Matplotlib, Seaborn, Numpy.
 Clone this repository or download the code.
 Install the required dependencies: pip install tensorflow keras scikit-learn matplotlib seaborn numpy
 Make sure you have access to the dataset. This code assumes you have the Alzheimer's dataset placed in a Google Drive folder, accessible via Google Colab.
-## usage
+## Usage
 
 Clone the repository and open it in VS Code
 Make sure you have Python and required packages installed (see Requirements section).
