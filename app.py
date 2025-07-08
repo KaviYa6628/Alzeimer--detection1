@@ -1,11 +1,23 @@
+import os
 import streamlit as st
 import numpy as np
 from PIL import Image
+import gdown
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image as keras_image
 
-# Load model and class names
-model = load_model("cnn_model.h5")
+# Automatically download model from Google Drive if not present
+model_path = "cnn_model.h5"
+if not os.path.exists(model_path):
+    file_id = "1ROM98O3v5qln-3dYzPVgp0dL6_LCjq8y"
+    url = f"https://drive.google.com/uc?id={file_id}"
+    gdown.download(url, model_path, quiet=False)
+
+@st.cache_resource
+def load_my_model():
+    return load_model("cnn_model.h5")
+
+model = load_my_model()
 class_names = ["Mild Demented", "Moderate Demented", "Non Demented", "Very Mild Demented"]
 
 # Page config
@@ -42,11 +54,10 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Image uploader
-uploaded_file = st.file_uploader("Upload MRI Image", type=["jpg", "jpeg", "png"])
+uploaded_file = st.file_uploader("📤 Upload MRI Image", type=["jpg", "jpeg", "png"])
 
 if uploaded_file:
     try:
-        # Preprocess image to match model input
         image = Image.open(uploaded_file).convert("L")
         image = image.resize((176, 176))
         img_array = keras_image.img_to_array(image)
@@ -54,88 +65,96 @@ if uploaded_file:
 
         st.image(image, caption="🖼 Uploaded MRI (Grayscale)", use_column_width=False, width=300)
 
-        # Predict
-        with st.spinner("Analyzing MRI with AI model..."):
+        with st.spinner("🧠 Analyzing MRI..."):
             prediction = model.predict(img_array)[0]
             predicted_index = np.argmax(prediction)
             predicted_class = class_names[predicted_index]
             confidence = prediction[predicted_index] * 100
 
-        st.success(f"🔍 **Prediction**: {predicted_class}")
-        st.info(f"📈 **Confidence**: {confidence:.2f}%")
+        st.success(f"🔍 *Prediction*: {predicted_class}")
+        st.info(f"📈 *Confidence*: {confidence:.2f}%")
 
     except Exception as e:
-        st.error(f"❌ Error processing image: {str(e)}")
+        st.error(f"❌ Error: {str(e)}")
 
 st.markdown("---")
-st.subheader("🧬 Understanding Alzheimer's Disease Stages")
+st.subheader("📘 Alzheimer's Disease Stages")
 
 col1, col2 = st.columns(2)
 
 with col1:
     with st.expander("🟢 Non Demented"):
         st.markdown("""
-        <div class="disease-title">What it means:</div>
+        <div class="disease-title">Description:</div>
         <ul class="symptom-list">
-            <li>Healthy brain with no cognitive impairment</li>
-            <li>No signs of memory loss or confusion</li>
-            <li>Baseline control group in diagnosis</li>
+            <li>Healthy cognitive state with no symptoms</li>
+            <li>Baseline for comparison in diagnosis</li>
+            <li>Independent daily functioning</li>
         </ul>
         <div class="disease-title">Recommended Action:</div>
-        <p>Maintain a healthy lifestyle, regular exercise, and balanced diet.</p>
+        <ul class="symptom-list">
+            <li>Maintain brain health with physical & mental activity</li>
+            <li>Regular medical checkups</li>
+            <li>Nutritious diet and low stress lifestyle</li>
+        </ul>
+        <a href="https://www.alz.org/alzheimers-dementia/stages" target="_blank">🔗 Learn more about Alzheimer's stages</a>
         """, unsafe_allow_html=True)
 
     with st.expander("🟡 Very Mild Demented"):
         st.markdown("""
-        <div class="disease-title">What it means:</div>
+        <div class="disease-title">Description:</div>
         <ul class="symptom-list">
-            <li>Minor forgetfulness not affecting daily tasks</li>
-            <li>Normal aging-related memory loss</li>
-            <li>Often unrecognized without testing</li>
-        </ul>
-        <div class="disease-title">Symptoms:</div>
-        <ul class="symptom-list">
-            <li>Forgetting names or appointments</li>
-            <li>Misplacing objects occasionally</li>
+            <li>Minor memory lapses (not affecting daily life)</li>
+            <li>Often considered part of normal aging</li>
+            <li>Detected only through testing</li>
         </ul>
         <div class="disease-title">Recommended Action:</div>
-        <p>Monitor regularly; engage in mental activities, stay social.</p>
+        <ul class="symptom-list">
+            <li>Mental stimulation (reading, puzzles, learning)</li>
+            <li>Frequent social interaction</li>
+            <li>Monitor for any increasing symptoms</li>
+        </ul>
+        <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6527027/" target="_blank">🔗 Read scientific article on early Alzheimer's</a>
         """, unsafe_allow_html=True)
 
 with col2:
     with st.expander("🟠 Mild Demented"):
         st.markdown("""
-        <div class="disease-title">What it means:</div>
+        <div class="disease-title">Description:</div>
         <ul class="symptom-list">
-            <li>Noticeable cognitive decline</li>
-            <li>Interference with work and social life</li>
-        </ul>
-        <div class="disease-title">Symptoms:</div>
-        <ul class="symptom-list">
-            <li>Getting lost in familiar places</li>
-            <li>Difficulty remembering recent events</li>
-            <li>Problems with planning or organization</li>
+            <li>Memory and thinking issues noticeable to others</li>
+            <li>Problems with planning and completing tasks</li>
+            <li>Difficulty remembering names and recent events</li>
         </ul>
         <div class="disease-title">Recommended Action:</div>
-        <p>Seek medical diagnosis, begin therapy or treatment early.</p>
+        <ul class="symptom-list">
+            <li>Consult a neurologist for evaluation</li>
+            <li>Establish a treatment or care routine</li>
+            <li>Start safety planning at home</li>
+        </ul>
+        <a href="https://www.nia.nih.gov/health/what-mild-cognitive-impairment" target="_blank">🔗 What is Mild Cognitive Impairment?</a>
         """, unsafe_allow_html=True)
 
     with st.expander("🔴 Moderate Demented"):
         st.markdown("""
-        <div class="disease-title">What it means:</div>
+        <div class="disease-title">Description:</div>
         <ul class="symptom-list">
-            <li>Worsening memory and confusion</li>
-            <li>Assistance needed for daily tasks</li>
-        </ul>
-        <div class="disease-title">Symptoms:</div>
-        <ul class="symptom-list">
-            <li>Inability to recognize family members</li>
-            <li>Loss of orientation to time/place</li>
-            <li>Repeating questions or statements</li>
+            <li>Significant confusion and forgetfulness</li>
+            <li>Help needed for dressing, eating, etc.</li>
+            <li>Personality and behavior changes possible</li>
         </ul>
         <div class="disease-title">Recommended Action:</div>
-        <p>Medical intervention required; consider support for caregiving and daily living assistance.</p>
+        <ul class="symptom-list">
+            <li>24/7 care and support structure is essential</li>
+            <li>Medication and therapies may slow progression</li>
+            <li>Family and caregiver education crucial</li>
+        </ul>
+        <a href="https://www.mayoclinic.org/diseases-conditions/alzheimers-disease/in-depth/alzheimers-stages/art-20048448" target="_blank">🔗 Moderate Alzheimer's: Mayo Clinic</a>
         """, unsafe_allow_html=True)
 
 st.markdown("---")
-st.caption("Developed with 🧠 by AI-Powered Diagnostics | Data sourced from Alzheimer's Association & Mayo Clinic")
+st.caption("© 2025 | Alzheimer's Detection System | Powered by Deep Learning")
+   
+            
+        
+          
